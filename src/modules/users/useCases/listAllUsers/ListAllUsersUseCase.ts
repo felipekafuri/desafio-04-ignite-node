@@ -2,21 +2,24 @@ import { User } from "../../model/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 interface IRequest {
-  user_id: string;
+  user_id: string | string[];
 }
 
 class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ user_id }: IRequest): User[] {
-    const isUserAdmin = this.usersRepository.findById(user_id);
+    const currentUser = this.usersRepository.findById(user_id);
 
-    if (!isUserAdmin.admin) {
-      throw new Error("User is not admin");
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+
+    if (!currentUser.admin) {
+      throw new Error("You dont have the access to see this information");
     }
 
     const users = this.usersRepository.list();
-    console.log(users);
 
     return users;
   }
