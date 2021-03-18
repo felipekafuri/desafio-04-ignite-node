@@ -1,0 +1,2 @@
+## Turn user into admin
+PATCH http://localhost:3333/users/34b262a8-6857-4c7f-aa29-6bce1da989b7/admin
